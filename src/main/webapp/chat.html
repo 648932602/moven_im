@@ -40,7 +40,12 @@
 
 		function start() {
 			var text = document.getElementById('text').value;
-			webSocket.send(text);
+			if(text){
+				webSocket.send(text);
+			} else {
+				alert("Message can't be null");
+			}
+			document.getElementById('text').value = '';
 			return false;
 		}
 	</script>
