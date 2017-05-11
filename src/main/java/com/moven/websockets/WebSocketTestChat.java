@@ -49,9 +49,9 @@ public class WebSocketTestChat {
 			String receivername = params.get("receivername");
 			for (Session s : session_list) {
 				Map<String, String> tempParams = s.getPathParameters();
-				String tempname = tempParams.get("receivername");
+				String tempname = tempParams.get("username");
 				if(receivername.equals(tempname)){
-					s.getBasicRemote().sendText("["+username + "] 对 " + receivername + "说:" + message);
+					s.getBasicRemote().sendText("["+username + "] 对 [" + receivername + "] 说:" + message);
 				}
 			}
 		} catch(IOException e){
