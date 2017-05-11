@@ -1,6 +1,7 @@
 package com.moven.websockets;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -12,27 +13,46 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint("/chat/{username}")
+@ServerEndpoint("/chat/{username}/{receivername}")
 public class WebSocketTestChat {
 	Set<Session> session_list = null;
 
+//	@OnMessage
+//	public void onMessage(String message, Session session) {
+//		try{
+//			session_list = session.getOpenSessions();
+//			HttpSession httpSession = null;
+//			String username = "";
+//			if(session instanceof HttpSession){
+//				httpSession = (HttpSession)session;
+//				Object param = httpSession.getAttribute("username");
+//				if(null != param){
+//					username = param.toString();
+//				}
+//			} else {
+//				username = session.getId();
+//			}
+//			for (Session s : session_list) {
+//				s.getBasicRemote().sendText("当前总人数[" + session_list.size() + "]---" + username + "说:" + message);
+//			}
+//		} catch(IOException e){
+//			System.out.println("Client error");
+//		}
+//	}
+	
 	@OnMessage
 	public void onMessage(String message, Session session) {
 		try{
 			session_list = session.getOpenSessions();
-			HttpSession httpSession = null;
-			String username = "";
-			if(session instanceof HttpSession){
-				httpSession = (HttpSession)session;
-				Object param = httpSession.getAttribute("username");
-				if(null != param){
-					username = param.toString();
-				}
-			} else {
-				username = session.getId();
-			}
+			Map<String, String> params = session.getPathParameters();
+			String username = params.get("username");
+			String receivername = params.get("receivername");
 			for (Session s : session_list) {
-				s.getBasicRemote().sendText("当前总人数[" + session_list.size() + "]---" + username + "说:" + message);
+				Map<String, String> tempParams = s.getPathParameters();
+				String tempname = tempParams.get("receivername");
+				if(receivername.equals(tempname)){
+					s.getBasicRemote().sendText("["+username + "] 对 " + receivername + "说:" + message);
+				}
 			}
 		} catch(IOException e){
 			System.out.println("Client error");
