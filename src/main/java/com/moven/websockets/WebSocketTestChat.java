@@ -49,11 +49,10 @@ public class WebSocketTestChat {
 			String receivername = params.get("receivername");
 			for (Session s : session_list) {
 				Map<String, String> tempParams = s.getPathParameters();
-				String tempname = tempParams.get("username");
-				if(receivername.equals(tempname)){
-					String responseText = "["+username + "] 对 [" + receivername + "] 说:" + message;
-					System.out.println(responseText);
-					s.getBasicRemote().sendText(responseText);
+				String t_username = tempParams.get("username");
+				String t_receivername = tempParams.get("receivername");
+				if(receivername.equals(t_username) || receivername.equals(t_receivername)){
+					s.getBasicRemote().sendText("["+username + "] 对 [" + receivername + "] 说:" + message);
 				}
 			}
 		} catch(IOException e){
