@@ -13,7 +13,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 @ServerEndpoint("/chat/{username}/{receivername}")
-public class WebSocketTestChat {
+public class WebSocketChat {
 	//广播地址列表
 //	Set<Session> session_list = null;
 	//用户连接池
